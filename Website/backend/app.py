@@ -9,15 +9,15 @@ app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-model = tf.keras.models.load_model('Models/1717240268.h5')
+model = tf.keras.models.load_model('Models/CustomCNN.h5')
 
 def preprocess_frame(frame):
     frame = cv2.resize(frame, (150, 150))
     frame = frame / 255.0
     return np.expand_dims(frame, axis=0)
 
-def generate_frames():
-    cap = cv2.VideoCapture('uploaded_video.mp4')
+def generate_frames(video_source):
+    cap = cv2.VideoCapture(video_source)
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -50,7 +50,11 @@ def upload_video():
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(generate_frames(0), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/uploaded_video_feed')
+def uploaded_video_feed():
+    return Response(generate_frames('uploaded_video.mp4'), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

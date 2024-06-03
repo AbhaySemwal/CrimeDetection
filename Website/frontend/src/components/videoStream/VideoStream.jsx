@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useRef, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
@@ -8,6 +8,7 @@ const VideoStream = () => {
     const [prediction, setPrediction] = useState('');
     const [videoUploaded, setVideoUploaded] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [source, setSource] = useState('');
     const iframeRef = useRef(null);
 
     useEffect(() => {
@@ -32,20 +33,25 @@ const VideoStream = () => {
             });
 
             setVideoUploaded(true);
+            setSource('uploaded');
             startVideo();
         }
     };
 
     const startVideo = () => {
         if (iframeRef.current) {
-            iframeRef.current.src = 'http://localhost:5000/video_feed';
+            if (source === 'live') {
+                iframeRef.current.src = 'http://localhost:5000/video_feed';
+            } else if (source === 'uploaded') {
+                iframeRef.current.src = 'http://localhost:5000/uploaded_video_feed';
+            }
             setIsPlaying(true);
         }
     };
 
     const pauseVideo = () => {
         if (iframeRef.current) {
-            iframeRef.current.src = '';  // Clear the iframe src to stop the video
+            iframeRef.current.src = '';
             setIsPlaying(false);
         }
     };
@@ -53,8 +59,9 @@ const VideoStream = () => {
     const handleStopVideo = () => {
         setVideoUploaded(false);
         setPrediction('');
+        setSource('');
         if (iframeRef.current) {
-            iframeRef.current.src = '';  // Clear the iframe src to stop the video
+            iframeRef.current.src = '';
         }
         setIsPlaying(false);
     };
@@ -62,13 +69,21 @@ const VideoStream = () => {
     return (
         <div className="flex flex-col items-center min-h-screen py-8">
             <h1 className="text-4xl font-bold mb-8 text-gray-800">Crime Detection through CCTV Surveillance</h1>
-            <input 
-                type="file" 
-                accept="video/*" 
-                onChange={handleVideoUpload} 
-                className="mb-4 p-2 border border-gray-300 rounded-md"
-            />
-            {videoUploaded && (
+            <div className="flex flex-col mb-4">
+                <button 
+                    onClick={() => { setSource('live'); startVideo(); }} 
+                    className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+                >
+                    Start Live Feed
+                </button>
+                <input 
+                    type="file" 
+                    accept="video/*" 
+                    onChange={handleVideoUpload} 
+                    className="p-2 border border-gray-300 rounded-md"
+                />
+            </div>
+            {(videoUploaded || source === 'live') && (
                 <div className="w-full max-w-4xl p-4 rounded-lg shadow-md">
                     <iframe 
                         ref={iframeRef}
