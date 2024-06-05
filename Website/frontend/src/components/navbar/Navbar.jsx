@@ -17,7 +17,7 @@ const Navbar = () => {
   
 
   return (
-    <div onScroll={changeNavBg} className={`fixed flex justify-between items-center w-full py-3 px-20 text-white transition duration-300 ease-in-out ${navbg ? "bg-black" : "bg-gray-500/15"}`}>
+    <div onScroll={changeNavBg} className={`z-10 fixed flex justify-between items-center w-full py-3 px-20 text-white transition duration-300 ease-in-out ${navbg ? "bg-black" : "bg-gray-500/15"}`}>
       <div className='flex justify-between w-full'>
         <div className='w-[40%]'>
           <Link href="/" className='font-semibold text-2xl'>Crime Detection</Link>

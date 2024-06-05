@@ -1,5 +1,7 @@
-django
-gunicorn
+flask
+flask_cors
+flask_socketio
 tensorflow
-opencv-python
 numpy
+opencv-python
+cv2
