@@ -1,11 +1,25 @@
-import VideoStream from "@/components/videoStream/VideoStream";
+import Benefits from "@/components/benefits/Benefits";
+import Contact from "@/components/contact/Contact";
+import CrimeDetector from "@/components/crimedetector/CrimeDetector";
+import Features from "@/components/features/Features";
+import Footer from "@/components/footer/Footer";
+import Navbar from "@/components/navbar/Navbar";
+import Topsection from "@/components/topsection/Topsection";
 
 
 export default function Home() {
+  
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold mb-8">Video Processor</h1>
-      <VideoStream/>
+    <main className="">
+      <div style={{backgroundImage: "url(/cctv1.jpeg)"}} className="min-h-screen bg-cover">
+        <Navbar/>
+        <Topsection/>
+      </div>
+      <Features/>
+      <CrimeDetector/>
+      <Benefits/>
+      <Contact/>
+      <Footer/>
     </main>
   )
 }

@@ -26,7 +26,7 @@ def generate_frames(video_source):
 
         preprocessed_frame = preprocess_frame(frame)
         prediction = model.predict(preprocessed_frame)
-        label = 'Suspicious' if prediction[0] > 0.85 else 'Normal'
+        label = 'Suspicious' if prediction[0] > 0.9 else 'Peaceful'
         
         print(f"Prediction: {prediction[0]}, Label: {label}")
 
